@@ -1,4 +1,4 @@
-import paho.mqtt.client as mqtt
+""" import paho.mqtt.client as mqtt
 from web3 import Web3
 import time
 
@@ -64,7 +64,7 @@ try:
 except KeyboardInterrupt:
     print("Script terminated by user")
     client.disconnect()
-    client.loop_stop()
+    client.loop_stop() """
 
 
 

@@ -6,7 +6,7 @@ const contractABI = require('./AnimalTrackingABI.json'); // Replace with your AB
 const mqttBrokerUrl = 'mqtt://your-mqtt-broker-url';
 const mqttTopic = 'animal-tracking-topic';
 
-const web3 = new Web3('https://mainnet.infura.io/v3/your-infura-api-key'); // Replace with your Infura API key
+const web3 = new Web3('https://sepolia.infura.io/v3/cc5cf625859f4030bca941d5fee94d03'); // Replace with your Infura API key
 
 const contractAddress = '0xYourContractAddress'; // Replace with your contract address
 const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -36,7 +36,7 @@ mqttClient.on('message', (topic, message) => {
     const trackingData = JSON.parse(message);
 
     // Invoke the captureData function in the smart contract
-    contract.methods.captureData(
+    contract.methods.storeCaptureData(
         trackingData.animalId,
         trackingData.latitude,
         trackingData.longitude
