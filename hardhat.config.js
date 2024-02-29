@@ -1,14 +1,18 @@
-require("@nomicfoundation/hardhat-toolbox");
-require('dotenv').config()
-
 /** @type import('hardhat/config').HardhatUserConfig */
+
+require('dotenv').config()
+require("@nomicfoundation/hardhat-toolbox");
+
+const { API_URL, PRIVATE_KEY} = process.env;
+
 module.exports = {
   solidity: "0.8.19",
-  
+  defaultNetwork: "sepolia",  
   networks: {
+    hardhat: {},
     sepolia: {
-      url: process.env.ALCHEMY_TESTNET_RPC_URL,
-      accounts: [process.env.TESTNET_PRIVATE_KEY]
+      url: API_URL,
+      accounts: [`0x${PRIVATE_KEY}`]
     }    
   } 
 };

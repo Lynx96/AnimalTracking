@@ -26,10 +26,13 @@ function generateAnimalData() {
   };
 }
 
+const animalData = generateAnimalData();
+const payload = JSON.stringify(animalData);
+
 // Publish animal tracking data every minute
 setInterval(function() {
-  const animalData = generateAnimalData();
-  const payload = JSON.stringify(animalData);
+  //const animalData = generateAnimalData();
+  //const payload = JSON.stringify(animalData);
   
   client.publish('animal/data', payload, function (err) {
     if (!err) {
@@ -44,22 +47,41 @@ setInterval(function() {
 
 async function sendDataToBlockchain(){
     try {
-        const apiKey = '45zltduN9c6fEVfiSVeUp0v8SXsm7K52';
-        const alchemyEndpoint = 'https://eth-sepolia.g.alchemy.com/v2/45zltduN9c6fEVfiSVeUp0v8SXsm7K52' + apiKey; // Replace with appropriate endpoint
+        const API_KEY = process.env.API_KEY;
+        const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
+        const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
+        
+        const { ethers } = require("ethers");
+        const contract = require("../artifacts/contracts/AnimalTracking.sol/AnimalTracking.json");
+        
+        //provider - alchemy
+        const alchemyProvider = new ethers.AlchemyProvider(network="sepolia", API_KEY); // Replace with appropriate endpoint
 
+        //signer - you
+        const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
+
+        //contract instance
+        const animalTrackingContract = new ethers.Contract(CONTRACT_ADDRESS, contract.abi, signer);
+
+        //async function main(){
+          const animalData = await animalTrackingContract.animalData();
+          console.log("The animal data sent was the following: " + animalData);
+
+          console.log("Waiting for new data to arrive...");
+          //const tx = await animalTrackingContract.storeCaptureData()        
+        //}
+                
         // Example contract interaction data
-        const web3 = new Web3(alchemyEndpoint);
-        const contractAddress = '0x6642b625499612409453c3d582bd7950b37863ed';
-        const abi = JSON.parse(fs.readFileSync('C:\Users\joaoh\Documents\BOLSA\AnimalTracking\AnimalTracking\artifacts\contracts\AnimalTracking.sol\AnimalTracking.json'));
+        //const web3 = new Web3(alchemyProvider);
+        //const abi = JSON.parse(fs.readFileSync('C:\Users\joaoh\Documents\BOLSA\AnimalTracking\AnimalTracking\artifacts\contracts\AnimalTracking.sol\AnimalTracking.json'));
         //const abi = [{ "constant": false, ... }]; // Replace with your contract ABI
-        const contract = new web3.eth.Contract(abi, contractAddress);
-        const account = '0x7B4Cae5555853c323b9842EcB04825f1CfF0375e'; // Replace with your account address
-        const privateKey = 'bb3319f2e5e5f86a31e8f971669e4e9aced9b2ed06eeac2002f2d759c5fc4c71'; // Replace with your private key
-        const options = {
+        //const contract = new web3.eth.Contract(abi, contractAddress);
+        //const account = '0x7B4Cae5555853c323b9842EcB04825f1CfF0375e'; // Replace with your account address
+       /*  const options = {
             from: account,
             gasPrice: '20000000000', // Example gas price
             gas: 200000 // Example gas limit
-        };
+        }; */
 
         // Example transaction
         const transaction = contract.methods.storeCaptureData(data.animalId, data.latitude, data.longitude, data.timestamp);
@@ -80,9 +102,11 @@ async function sendDataToBlockchain(){
         console.error('Error sending data to Alchemy blockchain node provider:', error);
     }
 
-}
+  }
 
 // Handle errors
 client.on('error', function (error) {
   console.error('Error:', error);
 });
+
+
