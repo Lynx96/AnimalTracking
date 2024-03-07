@@ -3,7 +3,9 @@ async function main() {
   const AnimalTracking = await ethers.getContractFactory("AnimalTracking");
   
   const animal_tracking = await AnimalTracking.deploy();
-  console.log("Contract deployed to address: ", animal_tracking.address);
+  await animal_tracking.waitForDeployment();
+  const animal_trackingDeployedAddress = await animal_tracking.getAddress();
+  console.log("Contract deployed to address: ", animal_trackingDeployedAddress);
 
 }  
   
