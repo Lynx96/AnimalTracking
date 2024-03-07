@@ -1,4 +1,5 @@
 const mqtt = require('mqtt');
+const { sendDataToBlockchain } = require('../scripts/sendDataToBlockchain');
 
 // MQTT broker options
 const brokerOptions = {
@@ -23,6 +24,8 @@ client.on('connect', function () {
 
 // Handle incoming messages
 client.on('message', function (topic, message) {
+  const {animalId, latitude, longitude} = JSON.parse(message); 
+  sendDataToBlockchain(animalId, latitude, longitude);
   console.log('Received message on topic:', topic, ' Message:', message.toString());
 });
 
