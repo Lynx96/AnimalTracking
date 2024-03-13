@@ -24,9 +24,19 @@ client.on('connect', function () {
 
 // Handle incoming messages
 client.on('message', function (topic, message) {
-  const {animalId, latitude, longitude} = JSON.parse(message); 
-  sendDataToBlockchain(animalId, latitude, longitude);
-  console.log('Received message on topic:', topic, ' Message:', message.toString());
+  try {
+    const data = JSON.parse(message); 
+    const ethereumData = data.ethereumData;
+    sendDataToBlockchain(ethereumData);
+    console.log('Received message on topic:', topic, ' Message:', message.toString());
+  }
+  catch (error) {
+    console.error("Error parsing message: ", error);
+    
+  }
+  //const {animalId, latitude, longitude} = JSON.parse(message); 
+ 
+  //sendDataToBlockchain(animalId, latitude, longitude);
 });
 
 // Handle errors

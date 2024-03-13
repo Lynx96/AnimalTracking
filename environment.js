@@ -1,4 +1,4 @@
-require('dotenv').config();
+/* require('dotenv').config();
 const environment = process.env.PRIVATE_KEY;
 module.exports = {
     API_URL : process.env.API_URL,
@@ -7,4 +7,4 @@ module.exports = {
     CONTRACT_ADDRESS : process.env.CONTRACT_ADDRESS
 }
 
-console.log(environment)
+console.log(environment) */

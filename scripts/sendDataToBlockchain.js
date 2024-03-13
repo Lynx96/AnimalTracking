@@ -1,21 +1,18 @@
-//const environment = require("../environment");
-//console.log(environment);
-
+const path = require('path');
+require('dotenv').config( { path: path.resolve('../.env')} )
 const { ethers } = require("ethers");
 
 const contract = require("../artifacts/contracts/AnimalTracking.sol/AnimalTracking.json");
-
 const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
+
+
 console.log(456789123, PRIVATE_KEY);
 
 //provider - alchemy
-const alchemyProvider = new ethers.AlchemyProvider(
-  (network = "sepolia"),
-  API_KEY
-); // Replace with appropriate endpoint
+const alchemyProvider = new ethers.AlchemyProvider(network = "sepolia", API_KEY); // Replace with appropriate endpoint
 
 //signer - you
 const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
