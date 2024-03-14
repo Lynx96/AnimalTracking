@@ -37,9 +37,11 @@ client.on('message', function (topic, message) {
   //const {animalId, latitude, longitude} = JSON.parse(message); 
  
   //sendDataToBlockchain(animalId, latitude, longitude);
+  module.exports = data;
 });
 
 // Handle errors
 client.on('error', function (error) {
   console.error('Error:', error);
 });
+

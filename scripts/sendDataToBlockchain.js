@@ -1,27 +1,35 @@
 const path = require('path');
+const data = require('../mqtt/subscriber');
 require('dotenv').config( { path: path.resolve('../.env')} )
 const { ethers } = require("ethers");
 
-const contract = require("../artifacts/contracts/AnimalTracking.sol/AnimalTracking.json");
 const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
 
-//provider - alchemy
-const alchemyProvider = new ethers.AlchemyProvider(network = "sepolia", API_KEY); // Replace with appropriate endpoint
+const filepath =  'subscriber.js'
+async function sendDataToBlockchain(data, alchemyProvider, PRIVATE_KEY, CONTRACT_ADDRESS) {
+  
+  //provider - alchemy
+  const alchemyProvider = new ethers.AlchemyProvider(network = "sepolia", API_KEY); // Replace with appropriate endpoint
+  
+  //signer - you
+  const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
+  
+  const contractAbi = require("../artifacts/contracts/AnimalTracking.sol/AnimalTracking.json");
 
-//signer - you
-const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
+  //contract instance
+  const animalTrackingContract = new ethers.Contract(
+    CONTRACT_ADDRESS,
+    contractAbi.abi,
+    signer
+    );
 
-//contract instance
-const animalTrackingContract = new ethers.Contract(
-  CONTRACT_ADDRESS,
-  contract.abi,
-  signer
-);
-
-async function sendDataToBlockchain(animalId, latitude, longitude) {
+  const contractOwner = await animalTrackingContract.owner();
+  if(contractOwner !== signer.address){
+    throw new Error('Only the owner of the contract can send data');
+  }
   //async function main(){
   const animalData = await animalTrackingContract.animalData();
   console.log("The animal data sent was the following: " + animalData);
