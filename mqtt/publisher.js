@@ -27,7 +27,7 @@ setInterval(function () {
     }
 
   });
-}, 30000); // Publish every 1 minute (60000 milliseconds)
+}, 5000); // Publish every 1 minute (60000 milliseconds)
 
 
 // Handle errors

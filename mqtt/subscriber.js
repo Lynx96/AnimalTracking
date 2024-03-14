@@ -25,10 +25,10 @@ client.on('connect', function () {
 // Handle incoming messages
 client.on('message', function (topic, message) {
   try {
-    const data = JSON.parse(message); 
-    const ethereumData = data.ethereumData;
-    sendDataToBlockchain(ethereumData);
+    const data = JSON.parse(message);    
+    // sendDataToBlockchain(data);
     console.log('Received message on topic:', topic, ' Message:', message.toString());
+    console.log('Data sent to ethereum blockchain:', data)
   }
   catch (error) {
     console.error("Error parsing message: ", error);

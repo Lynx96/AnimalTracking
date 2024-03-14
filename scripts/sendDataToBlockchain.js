@@ -8,9 +8,6 @@ const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
 
-
-console.log(456789123, PRIVATE_KEY);
-
 //provider - alchemy
 const alchemyProvider = new ethers.AlchemyProvider(network = "sepolia", API_KEY); // Replace with appropriate endpoint
 

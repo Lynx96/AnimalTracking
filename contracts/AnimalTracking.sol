@@ -40,6 +40,12 @@ contract AnimalTracking {
 
         emit DataCaptured(_animalId, _latitude, _longitude, block.timestamp);
     }
+
+    function getTrackingData(uint256 _animalId) public view returns (uint256, int256, int256, uint256) {
+        TrackingData memory data = animalData[_animalId];
+        return (data.animalId, data.latitude, data.longitude, data.timestamp);
+    }  
+    
 }
 
 
