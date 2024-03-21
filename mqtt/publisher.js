@@ -12,9 +12,7 @@ const brokerOptions = {
 const client = mqtt.connect(brokerOptions);
 
 
-
-// Publish animal tracking data every minute
-setInterval(function () {
+function publishAnimalData() {
   const animalData = generateAnimalData();
   console.log(animalData);
   const payload = JSON.stringify(animalData);
@@ -27,7 +25,11 @@ setInterval(function () {
     }
 
   });
-}, 5000); // Publish every 1 minute (60000 milliseconds)
+}
+publishAnimalData();
+
+// Publish animal tracking data every minute
+setInterval(publishAnimalData, 10800000); // Publish every 1 minute (60000 milliseconds)
 
 
 // Handle errors

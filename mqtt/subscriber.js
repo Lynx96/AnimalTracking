@@ -25,19 +25,18 @@ client.on('connect', function () {
 // Handle incoming messages
 client.on('message', function (topic, message) {
   try {
-    const data = JSON.parse(message);    
-    // sendDataToBlockchain(data);
+    const animalData = JSON.parse(message); 
+    const {animalId, latitude, longitude} = animalData;
+     
+    sendDataToBlockchain(animalId, latitude, longitude);
     console.log('Received message on topic:', topic, ' Message:', message.toString());
-    console.log('Data sent to ethereum blockchain:', data)
+    console.log('Data sent to ethereum blockchain:', animalData)
   }
   catch (error) {
     console.error("Error parsing message: ", error);
     
-  }
-  //const {animalId, latitude, longitude} = JSON.parse(message); 
- 
-  //sendDataToBlockchain(animalId, latitude, longitude);
-  module.exports = data;
+  } 
+
 });
 
 // Handle errors
