@@ -21,22 +21,20 @@ const animalTrackingContract = new ethers.Contract(
   signer
 );
 
-async function sendDataToBlockchain(animalId, latitude, longitude) {
-  //async function main(){
-  const animalData = await animalTrackingContract.animalData();
-  console.log("The animal data sent was the following: " + animalData);
-
-  console.log("Waiting for new tracking data to arrive...");
-  const tx = await animalTrackingContract.storeCaptureData(
-    animalId,
-    latitude,
-    longitude
-  );
-  await tx.wait();
-
-  const newAnimalData = await animalTrackingContract.animalData();
-  console.log("The updated animal tracking data is: " + newAnimalData);
+async function sendDataToBlockchain(data) {
+  try {
+    const tx = await animalTrackingContract.storeCaptureData(data);
+    console.log("Transaction sent: ", tx)
+    await tx.wait();
+    console.log("Transaction confirmed! Animal Data sent was: ");
+    
+  } catch (error) {
+    console.error('Error sending data to blockchain:', error);    
+  }  
 }
+
+module.exports = {sendDataToBlockchain};
+
 /* sendDataToBlockchain()
   .then(() => process.exit(0))
   .catch((error) => {
@@ -44,7 +42,6 @@ async function sendDataToBlockchain(animalId, latitude, longitude) {
     process.exit(1);
   }); */
 
-module.exports = {sendDataToBlockchain};
 
 //}
 
