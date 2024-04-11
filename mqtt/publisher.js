@@ -29,7 +29,7 @@ function publishAnimalData() {
 publishAnimalData();
 
 // Publish animal tracking data every minute
-setInterval(publishAnimalData, 10800000); // Publish every 1 minute (60000 milliseconds)
+setInterval(publishAnimalData, 120000); // Publish every 1 minute (60000 milliseconds) 3 hours = 10800000
 
 
 // Handle errors

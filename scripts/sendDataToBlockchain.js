@@ -32,11 +32,13 @@ const animalTrackingContract = new ethers.Contract(
         } */
         const tx = await animalTrackingContract.storeCaptureData(animalId, latitude, longitude);
         await tx.wait();
-        console.log("Waiting for new tracking data to arrive...");
         const txData = tx.data;
-        console.log("Transaction confirmed! Data sent was: ", txData);
-        const decoded = abiDecoder.decodeMethod(txData);
+        console.log(typeof animalId, typeof latitude , typeof longitude)
+        console.log("Transaction confirmed! Data sent was: ", tx);
+       /*  const decoded = abiDecoder.decodeMethod(txData); */
+       const decoded = animalTrackingContract.interface.parseTransaction(tx);
         console.log("Decoded data is: ", decoded);
+        console.log("Waiting for new tracking data to arrive...");
     
   } catch (error) {
     console.error('Error sending data to blockchain:', error);
@@ -48,13 +50,13 @@ const animalTrackingContract = new ethers.Contract(
 module.exports = {sendDataToBlockchain};
 
 
-/* sendDataToBlockchain()
+/*  sendDataToBlockchain()
   .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
     process.exit(1);
-  }); */
-
+  }); 
+ */
 
 //}
 
