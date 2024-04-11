@@ -10,7 +10,6 @@ npx hardhat compile ---> compila o smart contract, gerando as pastas artifacts e
 
 ```
 
-
 Em seguida, é necessário criar um arquivo .env na raiz do projeto, pois ele conterá os dados necessários para a conexão com o smart contract. O arquivo .env deve ter os seguintes atributos:
 ``` shell
 API_URL = sua_api_url
@@ -27,9 +26,6 @@ O CONTRACT_ADRESS será obtido após a realização do seguinte comando:
 ```shell
 npx hardhat run scripts/deploy.js --network sepolia 
 ```
-
-
-
 
 Após a execução desses 2 comandos, é necessário utilizar um MQTT broker para a execução do serviço MQTT e executar os scripts de publish e subscribe
 
