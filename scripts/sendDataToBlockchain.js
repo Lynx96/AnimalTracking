@@ -1,7 +1,6 @@
 const path = require('path');
 require('dotenv').config( { path: path.resolve('../.env')} )
 const { ethers } = require("ethers");
-const abiDecoder = require('abi-decoder');
 
 const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
@@ -31,12 +30,10 @@ const animalTrackingContract = new ethers.Contract(
           throw new Error('Only the owner of the contract can send data');
         } */
         const tx = await animalTrackingContract.storeCaptureData(animalId, latitude, longitude);
-        await tx.wait();
-        const txData = tx.data;
+        await tx.wait();        
         console.log(typeof animalId, typeof latitude , typeof longitude)
-        console.log("Transaction confirmed! Data sent was: ", tx);
-       /*  const decoded = abiDecoder.decodeMethod(txData); */
-       const decoded = animalTrackingContract.interface.parseTransaction(tx);
+        console.log("Transaction confirmed! Data sent was: ", tx);       
+        const decoded = animalTrackingContract.interface.parseTransaction(tx);
         console.log("Decoded data is: ", decoded);
         console.log("Waiting for new tracking data to arrive...");
     
