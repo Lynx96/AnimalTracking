@@ -1,6 +1,7 @@
 const path = require('path');
 require('dotenv').config( { path: path.resolve('../.env')} )
 const { ethers } = require("ethers");
+const fs = require('fs');
 
 const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
@@ -29,17 +30,44 @@ const animalTrackingContract = new ethers.Contract(
         if(contractOwner !== signer.address){
           throw new Error('Only the owner of the contract can send data');
         } */
+        const filePath = '../transactionHashesAndData.txt';
         const tx = await animalTrackingContract.storeCaptureData(animalId, latitude, longitude);
-        await tx.wait();        
-        console.log(typeof animalId, typeof latitude , typeof longitude)
+        await tx.wait(); 
         console.log("Transaction confirmed! Data sent was: ", tx);       
         const decoded = animalTrackingContract.interface.parseTransaction(tx);
-        console.log("Decoded data is: ", decoded);
+        console.log("Decoded data is: ", decoded.args);        
         console.log("Waiting for new tracking data to arrive...");
+        
+        const TransactionHash = tx.hash;
+        let appendedData =  "Transaction Hash: " + TransactionHash + ' --> ' + "Decoded data: " + decoded.args.toString()
+        saveTransactionHashAndData(appendedData, filePath);       
+        
     
   } catch (error) {
     console.error('Error sending data to blockchain:', error);
     
+  }
+
+ /*  function stringifyArgs(args){
+    let stringfied = ''
+    for (const key in args){
+      stringfied += `${key}: ${args[key]}, `
+
+    }
+    return stringfied
+  } */
+
+  function saveTransactionHashAndData(appendedData, filePath){
+    try {
+      fs.appendFileSync(filePath, appendedData + '\n');
+      console.log("Hash and Data appended successfully!")    
+          
+    } catch (error) {
+      console.log("Error appending!");
+      console.log(error.message);
+    }
+     
+  
   }
    
 }

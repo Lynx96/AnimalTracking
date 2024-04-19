@@ -15,7 +15,7 @@ client.on('connect', function () {
   console.log('Connected to MQTT broker');
   client.subscribe('animal/data', function (err) {
     if (!err) {
-      console.log('Subscribed to animal/data topic');
+      console.log('Subscribed to animal/data topic. Waiting for data...');
     } else {
       console.error('Error subscribing to topic:', err);
     }
