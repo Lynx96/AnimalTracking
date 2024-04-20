@@ -34,9 +34,7 @@ client.on('message', function (topic, message) {
   }
   catch (error) {
     console.error("Error parsing message: ", error);
-    
   } 
-
 });
 
 // Handle errors

@@ -1,7 +1,6 @@
 const mqtt = require('mqtt');
 const { generateAnimalData } = require("./generateAnimalData")
 
-
 // MQTT broker options
 const brokerOptions = {
   host: '127.0.0.1', // MQTT broker host
@@ -10,7 +9,6 @@ const brokerOptions = {
 
 // Connect to the MQTT broker
 const client = mqtt.connect(brokerOptions);
-
 
 function publishAnimalData() {
   const animalData = generateAnimalData();
@@ -26,6 +24,7 @@ function publishAnimalData() {
 
   });
 }
+
 publishAnimalData();
 
 // Publish animal tracking data every minute
@@ -36,5 +35,3 @@ setInterval(publishAnimalData, 120000); // Publish every 1 minute (60000 millise
 client.on('error', function (error) {
   console.error('Error:', error);
 });
-
-
