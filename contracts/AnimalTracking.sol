@@ -4,7 +4,7 @@ pragma solidity ^0.8.1;
 
 contract AnimalTracking {
     // Evento para registrar cada captura de dados
-    event DataCaptured(uint256 animalId, int256 latitude, int256 longitude, uint256 timestamp);
+    event DataCaptured(uint256 animalId, int256 latitude, int256 longitude, string timestamp);
    
     address public owner; // Endereço do proprietário do contrato
     uint256 public lastCaptureTime; // Último horário de captura registrado
@@ -14,7 +14,7 @@ contract AnimalTracking {
         uint256 animalId;
         int256 latitude;
         int256 longitude;
-        uint256 timestamp;
+        string timestamp;
     }
 
     // Mapeamento de ID do animal para seus dados de rastreamento
@@ -26,7 +26,7 @@ contract AnimalTracking {
     }
 
     // Função para registrar dados de rastreamento
-    function storeCaptureData(uint256 _animalId, int256 _latitude, int256 _longitude, uint256 _timestamp) public {
+    function storeCaptureData(uint256 _animalId, int256 _latitude, int256 _longitude, string memory _timestamp) public {
         require(msg.sender == owner, "Apenas o proprietario pode registrar dados");
         require(block.timestamp >= lastCaptureTime + 2 minutes, "Apenas uma captura a cada 3 horas permitida");
        /*  require(_timestamp <= block.timestamp, "Timestamp deve ser no passado ou presente"); */
@@ -38,7 +38,7 @@ contract AnimalTracking {
         newData.longitude = _longitude;
         newData.timestamp = _timestamp;
 
-        lastCaptureTime = _timestamp;
+        lastCaptureTime = block.timestamp;
 
         emit DataCaptured(_animalId, _latitude, _longitude, _timestamp);
     }

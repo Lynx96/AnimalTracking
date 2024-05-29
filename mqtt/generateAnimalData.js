@@ -4,8 +4,8 @@ function generateAnimalData() {
   const animalId = Math.floor(Math.random() * 1000).toString(); // Generate a random animal ID
   const latitude = Math.floor(Math.random() * (180 + 1) * precision) - 90 * precision; // Generate a random latitude between -90 and 90
   const longitude = Math.floor(Math.random() * (360 + 1) * precision) -   180 * precision; // Generate a random longitude between -180 and 180 
-  const now = new Date();
-  const timestamp = Math.floor(now.getTime() / 1000)
+  let time = new Date().getTime();
+  const timestamp = new Date(time).toString();
 
   return {
     animalId,
