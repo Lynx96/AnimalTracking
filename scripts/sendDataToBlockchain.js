@@ -7,6 +7,7 @@ const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY; // Replace with your private key
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
+
 //provider - alchemy
 const alchemyProvider = new ethers.AlchemyProvider(network = "sepolia", API_KEY); // Replace with appropriate endpoint
 
@@ -15,6 +16,7 @@ const signer = new ethers.Wallet(PRIVATE_KEY, alchemyProvider);
 
 const contractAbi = require("../artifacts/contracts/AnimalTracking.sol/AnimalTracking.json");
 
+
 //contract instance
 const animalTrackingContract = new ethers.Contract(
   CONTRACT_ADDRESS,
@@ -22,20 +24,21 @@ const animalTrackingContract = new ethers.Contract(
   signer
   );
 
+
   
-  async function sendDataToBlockchain(animalId, latitude, longitude) {
-    
+  async function sendDataToBlockchain(animalId, latitude, longitude, timestamp) {
+   
     try {
       /* const contractOwner = await animalTrackingContract.owner();
         if(contractOwner !== signer.address){
           throw new Error('Only the owner of the contract can send data');
         } */
         const filePath = '../transactionHashesAndData.txt';
-        const tx = await animalTrackingContract.storeCaptureData(animalId, latitude, longitude);
-        await tx.wait(); 
+        const tx = await animalTrackingContract.storeCaptureData(animalId, latitude, longitude, timestamp);
+        await tx.wait();        
         console.log("Transaction confirmed! Data sent was: ", tx);       
         const decoded = animalTrackingContract.interface.parseTransaction(tx);
-        console.log("Decoded data is: ", decoded.args);        
+        console.log("Decoded data is: ", decoded);        
         console.log("Waiting for new tracking data to arrive...");
         
         const TransactionHash = tx.hash;
@@ -48,29 +51,20 @@ const animalTrackingContract = new ethers.Contract(
     
   }
 
- /*  function stringifyArgs(args){
-    let stringfied = ''
-    for (const key in args){
-      stringfied += `${key}: ${args[key]}, `
-
-    }
-    return stringfied
-  } */
-
-  function saveTransactionHashAndData(appendedData, filePath){
-    try {
-      fs.appendFileSync(filePath, appendedData + '\n');
-      console.log("Hash and Data appended successfully!")    
-          
-    } catch (error) {
-      console.log("Error appending!");
-      console.log(error.message);
-    }
-     
-  
+}
+function saveTransactionHashAndData(appendedData, filePath){
+  try {
+    fs.appendFileSync(filePath, appendedData + '\n');
+    console.log("Hash and Data appended successfully!")    
+        
+  } catch (error) {
+    console.log("Error appending!");
+    console.log(error.message);
   }
    
+
 }
+ 
 
 module.exports = {sendDataToBlockchain};
 

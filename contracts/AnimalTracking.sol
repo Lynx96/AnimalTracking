@@ -26,19 +26,21 @@ contract AnimalTracking {
     }
 
     // Função para registrar dados de rastreamento
-    function storeCaptureData(uint256 _animalId, int256 _latitude, int256 _longitude) public {
+    function storeCaptureData(uint256 _animalId, int256 _latitude, int256 _longitude, uint256 _timestamp) public {
         require(msg.sender == owner, "Apenas o proprietario pode registrar dados");
         require(block.timestamp >= lastCaptureTime + 2 minutes, "Apenas uma captura a cada 3 horas permitida");
+       /*  require(_timestamp <= block.timestamp, "Timestamp deve ser no passado ou presente"); */
+
 
         TrackingData storage newData = animalData[_animalId];
         newData.animalId = _animalId;
         newData.latitude = _latitude;
         newData.longitude = _longitude;
-        newData.timestamp = block.timestamp;
+        newData.timestamp = _timestamp;
 
-        lastCaptureTime = block.timestamp;
+        lastCaptureTime = _timestamp;
 
-        emit DataCaptured(_animalId, _latitude, _longitude, block.timestamp);
+        emit DataCaptured(_animalId, _latitude, _longitude, _timestamp);
     }
 
 }
