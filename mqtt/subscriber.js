@@ -25,7 +25,9 @@ async function processQueue(){
   isProcessingQueue = true;
   while (dataQueue.length > 0){
     const animalData = dataQueue.shift();   
-    console.log('Processing data with timestamp:', animalData.timestamp); 
+    console.log('Processing data with timestamp:', animalData.forEach(item => {
+      console.log(item.timestamp);
+    })); 
 
     try{
       await sendDataToBlockchain(animalData);
