@@ -24,11 +24,11 @@ async function processQueue(){
 
   isProcessingQueue = true;
   while (dataQueue.length > 0){
-    const animalData = dataQueue.shift();
-    const {animalId, latitude, longitude, timestamp} = animalData;
+    const animalData = dataQueue.shift();   
+    console.log('Processing data with timestamp:', animalData.timestamp); 
 
     try{
-      await sendDataToBlockchain(animalId, latitude, longitude, timestamp);
+      await sendDataToBlockchain(animalData);
       console.log("Data sent to ethereum blockchain:", animalData);
 
     }catch (error){

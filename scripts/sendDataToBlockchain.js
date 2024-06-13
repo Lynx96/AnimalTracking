@@ -26,7 +26,7 @@ const animalTrackingContract = new ethers.Contract(
 
 
   
-  async function sendDataToBlockchain(animalId, latitude, longitude, timestamp) {
+  async function sendDataToBlockchain(trackingData) {
    
     try {
       /* const contractOwner = await animalTrackingContract.owner();
@@ -34,11 +34,11 @@ const animalTrackingContract = new ethers.Contract(
           throw new Error('Only the owner of the contract can send data');
         } */
         const filePath = '../transactionHashesAndData.txt';
-        const tx = await animalTrackingContract.storeCaptureData(animalId, latitude, longitude, timestamp);
+        const tx = await animalTrackingContract.storeCaptureData(trackingData);
         await tx.wait();        
         console.log("Transaction confirmed! Data sent was: ", tx);       
         const decoded = animalTrackingContract.interface.parseTransaction(tx);
-        console.log("Decoded data is: ", decoded);        
+        console.log("Decoded data is: ", decoded.args);        
         console.log("Waiting for new tracking data to arrive...");
         
         const TransactionHash = tx.hash;
